@@ -5,8 +5,8 @@ namespace Diary.Domain
 {
     public class Assignment : Entity
     {
-        public Guid StudentClassId { get; private set; }
-        public StudentClass StudentClass { get; private set; }
+        public Guid ClassId { get; private set; }
+        public Class Class { get; private set; }
         public DateTime DueAt { get; private set; }
         public string Title { get; private set; }
         public string Description { get; private set; }
@@ -16,10 +16,10 @@ namespace Diary.Domain
         {
         }
 
-        public Assignment(StudentClass studentClass, DateTime dueAt, string title, string description, float maxGrade)
+        public Assignment(Class @class, DateTime dueAt, string title, string description, float maxGrade)
         {
-            StudentClassId = studentClass?.Id ?? throw new ArgumentNullException(nameof(studentClass));
-            StudentClass = studentClass;
+            ClassId = @class?.Id ?? throw new ArgumentNullException(nameof(@class));
+            Class = @class;
             SetDueAt(dueAt);
             SetTitle(title);
             SetDescription(description);

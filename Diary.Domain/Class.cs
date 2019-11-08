@@ -13,9 +13,10 @@ namespace Diary.Domain
         public Guid SchoolYearId { get; private set; }
         public SchoolYear SchoolYear { get; private set; }
         public int MaxCredits { get; private set; }
-        public ICollection<StudentClass> Students { get; private set; }
         public Guid TeacherId { get; private set; }
         public User Teacher { get; private set; }
+        public ICollection<StudentClass> Students { get; private set; }
+        public ICollection<Assignment> Assignments { get; private set; }
 
         public Class()
         {
@@ -40,6 +41,7 @@ namespace Diary.Domain
                 throw new ArgumentException("User is not a teacher");
             
             Students = new Collection<StudentClass>();
+            Assignments = new Collection<Assignment>();
         }
     }
 }

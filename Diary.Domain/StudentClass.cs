@@ -15,7 +15,6 @@ namespace Diary.Domain
         public StudentClassStatus Status { get; private set; }
         public float FinalGrade { get; private set; }
         public ICollection<Attendance> Attendance { get; private set; }
-        public ICollection<Assignment> Assignments { get; private set; }
 
         public StudentClass()
         {
@@ -35,7 +34,6 @@ namespace Diary.Domain
             FinalGrade = 0;
 
             Attendance = new Collection<Attendance>();
-            Assignments = new Collection<Assignment>();
         }
 
         // TODO metodo para 'finalizar' a cadeira, com nota minima de aprovacao e alteracao do status
