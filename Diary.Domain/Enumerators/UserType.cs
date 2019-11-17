@@ -2,7 +2,7 @@ namespace Diary.Domain.Enumerators
 {
     public enum UserType
     {
-        Administrator,
+        Admin,
         Teacher,
         Student,
         Guardian
