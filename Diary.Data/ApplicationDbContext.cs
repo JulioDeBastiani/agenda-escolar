@@ -33,6 +33,46 @@ namespace Arq.Data
                 .HasOne(a => a.Target)
                 .WithMany(c => c.Appointments)
                 .HasForeignKey(a => a.TargetId);
+
+            modelBuilder.Entity<Attendance>()
+                .HasIndex(a => new 
+                {
+                    a.Date,
+                    a.StudentClassId
+                })
+                .IsUnique();
+
+            modelBuilder.Entity<Grade>()
+                .HasIndex(g => new
+                {
+                    g.AssignmentId,
+                    g.StudentId
+                })
+                .IsUnique();
+
+            modelBuilder.Entity<SchoolYear>()
+                .HasIndex(s => s.Year)
+                .IsUnique();
+
+            modelBuilder.Entity<StudentClass>()
+                .HasIndex(s => new
+                {
+                    s.StudentId,
+                    s.ClassId
+                })
+                .IsUnique();
+
+            modelBuilder.Entity<User>()
+                .HasIndex(u => u.Username)
+                .IsUnique();
+
+            modelBuilder.Entity<UserEvent>()
+                .HasIndex(u => new
+                {
+                    u.UserId,
+                    u.EventId
+                })
+                .IsUnique();
                 
             modelBuilder.Entity<UserGuardian>()
                 .HasOne(u => u.Guardian)
@@ -43,6 +83,14 @@ namespace Arq.Data
                 .HasOne(u => u.Student)
                 .WithMany(u => u.Guardians)
                 .HasForeignKey(u => u.StudentId);
+
+            modelBuilder.Entity<UserGuardian>()
+                .HasIndex(u => new
+                {
+                    u.StudentId,
+                    u.GuardianId,
+                })
+                .IsUnique();
 
             base.OnModelCreating(modelBuilder);
         }
