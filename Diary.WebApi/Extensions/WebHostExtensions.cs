@@ -21,28 +21,37 @@ namespace Diary.WebApi.Extensions
                     var user = context.Users.FirstOrDefault();
                     if (user == null)
                     {
-                        var admin = new User("def", "def", "pass", UserType.Admin);
+                        var admin = new User("admin", "admin", "admin", UserType.Admin);
                         context.Users.Add(admin);
 
-                        var student = new User("stu", "stu", "pass", UserType.Student);
-                        context.Users.Add(student);
-
-                        var teacher = new User("te", "te", "pass", UserType.Teacher);
+                        var teacher = new User("iraci", "iraci", "pass", UserType.Teacher);
                         context.Users.Add(teacher);
 
-                        var gur = new User("gur", "gur", "pass", UserType.Guardian);
-                        context.Users.Add(gur);
+                        var julio = new User("julio", "julio", "pass", UserType.Student);
+                        context.Users.Add(julio);
+
+                        var guilherme = new User("guilherme", "guilherme", "pass", UserType.Student);
+                        context.Users.Add(guilherme);
+
+                        var cesar = new User("cesar", "cesar", "pass", UserType.Student);
+                        context.Users.Add(cesar);
+
+                        var matheus = new User("matheus", "matheus", "pass", UserType.Student);
+                        context.Users.Add(matheus);
 
                         var sy = new SchoolYear(2019);
                         context.SchoolYears.Add(sy);
 
-                        var sub = new Subject("Math");
+                        var sub = new Subject("Fundamentos");
                         context.Subjects.Add(sub);
 
                         var cls = new Class(sub, sy, 4, teacher);
                         context.Classes.Add(cls);
 
-                        var sc = new StudentClass(student, cls);
+                        context.StudentClasses.Add(new StudentClass(julio, cls));
+                        context.StudentClasses.Add(new StudentClass(guilherme, cls));
+                        context.StudentClasses.Add(new StudentClass(cesar, cls));
+                        context.StudentClasses.Add(new StudentClass(matheus, cls));
 
                         context.SaveChanges();
                     }

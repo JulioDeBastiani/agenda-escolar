@@ -1,5 +1,6 @@
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Arq.Data;
@@ -25,7 +26,7 @@ namespace Diary.WebApi.Security
 
         public async Task<TokenViewModel> GenerateTokenAsync(string username, string password)
         {
-            var user = await _usersRepository.GetQueryable().SingleOrDefaultAsync(s => s.Username == username);
+            var user = (await _usersRepository.GetPageAsync(predicate: s => s.Username == username)).SingleOrDefault();
 
             Console.WriteLine($"user is null: {user is null}");
 
