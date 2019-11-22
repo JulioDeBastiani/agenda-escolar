@@ -8,26 +8,23 @@ namespace Diary.Domain
         public Guid StudentClassId { get; private set; }
         public StudentClass StudentClass { get; private set; }
         public DateTime Date { get; private set; }
-        public int CreditsAttended { get; private set; }
+        public bool Absent { get; private set; }
 
         public Attendance()
         {
         }
 
-        public Attendance(StudentClass studentClass, DateTime date, int creditsAttended)
+        public Attendance(StudentClass studentClass, DateTime date, bool absent)
         {
             StudentClassId = studentClass?.Id ?? throw new ArgumentNullException(nameof(studentClass));
             StudentClass = studentClass;
             Date = date;
-            SetCreditsAttended(creditsAttended);
+            SetAbsent(absent);
         }
 
-        public void SetCreditsAttended(int creditsAttended)
+        public void SetAbsent(bool absent)
         {
-            if (creditsAttended > StudentClass.Class.MaxCredits || creditsAttended < 0)
-                throw new ArgumentOutOfRangeException(nameof(creditsAttended));
-
-            CreditsAttended = creditsAttended;
+            Absent = absent;
         }
     }
 }
