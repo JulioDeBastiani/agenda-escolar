@@ -7,6 +7,7 @@ using Diary.Domain;
 using Diary.Domain.Enumerators;
 using Diary.WebApi.InputModels;
 using Diary.WebApi.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -28,6 +29,7 @@ namespace Diary.WebApi.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public Task<ActionResult<IEnumerable<EventViewModel>>> GetAsync([FromQuery] PageInputModel inputModel = null)
             => ExecuteAsync<IEnumerable<EventViewModel>>(async () =>
             {
@@ -46,6 +48,7 @@ namespace Diary.WebApi.Controllers
             });
 
         [HttpGet("{id}")]
+        [Authorize]
         public Task<ActionResult<EventViewModel>> GetAsync(Guid id)
             => ExecuteAsync<EventViewModel>(async () =>
             {
@@ -63,6 +66,7 @@ namespace Diary.WebApi.Controllers
             });
 
         [HttpGet("created/{userId}")]
+        [Authorize]
         public Task<ActionResult<IEnumerable<EventViewModel>>> GetCreatedAsync(Guid userId, [FromQuery] PageInputModel inputModel = null)
             => ExecuteAsync<IEnumerable<EventViewModel>>(async () =>
             {
@@ -82,6 +86,7 @@ namespace Diary.WebApi.Controllers
             });
 
         [HttpGet("invited/{userId}")]
+        [Authorize]
         public Task<ActionResult<IEnumerable<EventViewModel>>> GetInvitedAsync(Guid userId, [FromQuery] PageInputModel inputModel = null)
             => ExecuteAsync<IEnumerable<EventViewModel>>(async () =>
             {
@@ -101,6 +106,7 @@ namespace Diary.WebApi.Controllers
             });
 
         [HttpPost]
+        [Authorize]
         public Task<ActionResult<EventViewModel>> PostAsync([FromBody] EventInputModel inputModel)
             => ExecuteAsync<EventViewModel>(async () =>
             {
@@ -115,6 +121,7 @@ namespace Diary.WebApi.Controllers
             });
 
         [HttpPut("{id}")]
+        [Authorize]
         public Task<ActionResult<EventViewModel>> PutAsync(Guid id, [FromBody] EventUpdateInputModel inputModel)
             => ExecuteAsync<EventViewModel>(async () =>
             {
@@ -142,6 +149,7 @@ namespace Diary.WebApi.Controllers
             });
 
         [HttpDelete("{id}")]
+        [Authorize]
         public Task<ActionResult<EventViewModel>> DeleteAsync(Guid id)
             => ExecuteAsync<EventViewModel>(async () =>
             {
@@ -162,6 +170,7 @@ namespace Diary.WebApi.Controllers
             });
 
         [HttpPost("{id}/complete")]
+        [Authorize]
         // TODO ideally should be a hangfire job
         public Task<ActionResult<EventViewModel>> CompleteAsync(Guid id)
             => ExecuteAsync<EventViewModel>(async () =>
@@ -183,6 +192,7 @@ namespace Diary.WebApi.Controllers
             });
 
         [HttpPost("{id}/invite/{userId}")]
+        [Authorize]
         public Task<ActionResult<EventViewModel>> InviteAsync(Guid id, Guid userId)
             => ExecuteAsync<EventViewModel>(async () =>
             {
@@ -211,6 +221,7 @@ namespace Diary.WebApi.Controllers
             });
 
         [HttpDelete("{id}/invite/{userId}")]
+        [Authorize]
         public Task<ActionResult<EventViewModel>> UninviteAsync(Guid id, Guid userId)
             => ExecuteAsync<EventViewModel>(async () =>
             {
@@ -236,6 +247,7 @@ namespace Diary.WebApi.Controllers
             });
 
         [HttpPost("{id}/invite/{userId}/confirm")]
+        [Authorize]
         public Task<ActionResult<EventViewModel>> ConfirmAsync(Guid id, Guid userId)
             => ExecuteAsync<EventViewModel>(async () =>
             {
@@ -261,6 +273,7 @@ namespace Diary.WebApi.Controllers
             });
 
         [HttpPost("{id}/invite/{userId}/decline")]
+        [Authorize]
         public Task<ActionResult<EventViewModel>> DeclineAsync(Guid id, Guid userId)
             => ExecuteAsync<EventViewModel>(async () =>
             {
