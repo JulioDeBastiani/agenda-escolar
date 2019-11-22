@@ -4,5 +4,6 @@ namespace Diary.WebApi.ViewModels
     {
         public string Token { get; set; }
         public string Type { get; set; }
+        public string UserId { get; set; }
     }
 }

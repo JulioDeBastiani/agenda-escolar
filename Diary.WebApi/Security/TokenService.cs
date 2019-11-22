@@ -61,7 +61,8 @@ namespace Diary.WebApi.Security
             var viewModel = new TokenViewModel
             {
                 Token = tokenHandler.WriteToken(token),
-                Type = user.Type.ToString().ToLower()
+                Type = user.Type.ToString().ToLower(),
+                UserId = user.Id.ToString()
             };
 
             return viewModel;
