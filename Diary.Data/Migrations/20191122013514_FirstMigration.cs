@@ -308,6 +308,12 @@ namespace Diary.Data.Migrations
                 column: "StudentClassId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Attendances_Date_StudentClassId",
+                table: "Attendances",
+                columns: new[] { "Date", "StudentClassId" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Classes_SchoolYearId",
                 table: "Classes",
                 column: "SchoolYearId");
@@ -328,14 +334,21 @@ namespace Diary.Data.Migrations
                 column: "CreatorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Grades_AssignmentId",
-                table: "Grades",
-                column: "AssignmentId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Grades_StudentId",
                 table: "Grades",
                 column: "StudentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Grades_AssignmentId_StudentId",
+                table: "Grades",
+                columns: new[] { "AssignmentId", "StudentId" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SchoolYears_Year",
+                table: "SchoolYears",
+                column: "Year",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_StudentClasses_ClassId",
@@ -343,9 +356,10 @@ namespace Diary.Data.Migrations
                 column: "ClassId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_StudentClasses_StudentId",
+                name: "IX_StudentClasses_StudentId_ClassId",
                 table: "StudentClasses",
-                column: "StudentId");
+                columns: new[] { "StudentId", "ClassId" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserEvents_EventId",
@@ -353,9 +367,10 @@ namespace Diary.Data.Migrations
                 column: "EventId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserEvents_UserId",
+                name: "IX_UserEvents_UserId_EventId",
                 table: "UserEvents",
-                column: "UserId");
+                columns: new[] { "UserId", "EventId" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserGuardians_GuardianId",
@@ -363,9 +378,16 @@ namespace Diary.Data.Migrations
                 column: "GuardianId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserGuardians_StudentId",
+                name: "IX_UserGuardians_StudentId_GuardianId",
                 table: "UserGuardians",
-                column: "StudentId");
+                columns: new[] { "StudentId", "GuardianId" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Username",
+                table: "Users",
+                column: "Username",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

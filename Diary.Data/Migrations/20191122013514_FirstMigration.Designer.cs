@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Diary.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20191121042340_SecondMigration")]
-    partial class SecondMigration
+    [Migration("20191122013514_FirstMigration")]
+    partial class FirstMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
