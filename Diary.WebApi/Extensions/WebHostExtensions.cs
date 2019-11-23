@@ -1,5 +1,5 @@
 using System.Linq;
-using Arq.Data;
+using Diary.Data;
 using Diary.Domain;
 using Diary.Domain.Enumerators;
 using Microsoft.AspNetCore.Hosting;

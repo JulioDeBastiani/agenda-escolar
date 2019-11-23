@@ -7,7 +7,7 @@ using Diary.Domain.Base;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 
-namespace Arq.Data
+namespace Diary.Data
 {
     public class GenericRepository<TEntity> where TEntity : Entity
     {

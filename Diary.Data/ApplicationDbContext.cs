@@ -1,7 +1,7 @@
 using Diary.Domain;
 using Microsoft.EntityFrameworkCore;
 
-namespace Arq.Data
+namespace Diary.Data
 {
     public class ApplicationDbContext : DbContext
     {

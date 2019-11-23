@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Arq.Data;
+using Diary.Data;
 using Diary.Domain;
 using Diary.Domain.Enumerators;
 using Diary.WebApi.InputModels;

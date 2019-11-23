@@ -26,7 +26,7 @@ namespace Diary.Domain
             SetMaxGrade(maxGrade);
         }
 
-        private void SetTitle(string title)
+        public void SetTitle(string title)
         {
             if (string.IsNullOrWhiteSpace(title))
                 throw new ArgumentNullException(nameof(title));
@@ -34,7 +34,7 @@ namespace Diary.Domain
             Title = title;
         }
 
-        private void SetDescription(string description)
+        public void SetDescription(string description)
         {
             if (string.IsNullOrWhiteSpace(description))
                 throw new ArgumentNullException(nameof(description));
@@ -42,7 +42,7 @@ namespace Diary.Domain
             Description = description;
         }
 
-        private void SetMaxGrade(float maxGrade)
+        public void SetMaxGrade(float maxGrade)
         {
             if (maxGrade < 0)
                 throw new ArgumentOutOfRangeException(nameof(maxGrade));
