@@ -15,6 +15,8 @@ namespace Diary.WebApi.ViewModels
         public UserViewModel Teacher { get; set; }
         public IEnumerable<StudentClassViewModel> Students { get; set; }
         public IEnumerable<AssignmentViewModel> Assignments { get; set; }
+        public int TotalAbsences { get; set; }
+        public float AverageAttendance { get; set; }
 
         public static implicit operator ClassViewModel(Class @class)
         {
@@ -30,6 +32,8 @@ namespace Diary.WebApi.ViewModels
             if (@class.Teacher == null)
                 return null;
 
+            var students = @class.Students.Select(s => (StudentClassViewModel) s);
+
             return new ClassViewModel
             {
                 Id = @class.Id,
@@ -38,8 +42,10 @@ namespace Diary.WebApi.ViewModels
                 SchoolYear = @class.SchoolYear.Year,
                 MaxCredits = @class.MaxCredits,
                 Teacher = @class.Teacher,
-                Students = @class.Students.Select(s => (StudentClassViewModel) s),
-                Assignments = @class.Assignments.Select(a => (AssignmentViewModel) a)
+                Students = students,
+                Assignments = @class.Assignments.Select(a => (AssignmentViewModel) a),
+                TotalAbsences = students.Sum(s => s.Absences),
+                AverageAttendance = students.Average(s => s.AttendanceM)
             };
         }
     }

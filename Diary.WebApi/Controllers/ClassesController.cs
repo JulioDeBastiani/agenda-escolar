@@ -16,11 +16,15 @@ namespace Diary.WebApi.Controllers
     [Route("api/[controller]")]
     public class ClassesController : ApiControllerBase
     {
-        public GenericRepository<Class> _classesRepository;
+        private GenericRepository<Class> _classesRepository;
+        private GenericRepository<Attendance> _attendanceRepository;
         
-        public ClassesController(GenericRepository<Class> classesRepository)
+        public ClassesController(
+            GenericRepository<Class> classesRepository,
+            GenericRepository<Attendance> attendanceRepository)
         {
             _classesRepository = classesRepository;
+            _attendanceRepository = attendanceRepository;
         }
 
         [HttpGet]
@@ -90,6 +94,76 @@ namespace Diary.WebApi.Controllers
                     return NoContent();
 
                 return Ok(classes.Select(c => (ClassViewModel) c));
+            });
+
+        [HttpPost("{id}/present/{studentId}/{date}")]
+        [Authorize]
+        public Task<ActionResult> PresentAsync(Guid id, Guid studentId, DateTime date)
+            => ExecuteAsync(async () =>
+            {
+                var @class = await _classesRepository.GetByIdAsync(
+                    id,
+                    includes: c => c
+                        .Include(r => r.Students)
+                            .ThenInclude(s => s.Attendance));
+
+                if (@class == null)
+                    return NotFound();
+
+                var student = @class.Students.SingleOrDefault(s => s.StudentId == studentId);
+
+                if (student == null)
+                    return NotFound();
+
+                var attendance = student.Attendance.SingleOrDefault(a => a.Date == date.Date);
+
+                if (attendance == null)
+                {
+                    attendance = new Attendance(student, date.Date, false);
+                    await _attendanceRepository.AddAsync(attendance);
+                }
+                else
+                {
+                    attendance.SetAbsent(false);
+                    await _attendanceRepository.UpdateAsync(attendance);
+                }
+
+                return Ok();
+            });
+
+        [HttpPost("{id}/present/{studentId}/{date}")]
+        [Authorize]
+        public Task<ActionResult> AbsentAsync(Guid id, Guid studentId, DateTime date)
+            => ExecuteAsync(async () =>
+            {
+                var @class = await _classesRepository.GetByIdAsync(
+                    id,
+                    includes: c => c
+                        .Include(r => r.Students)
+                            .ThenInclude(s => s.Attendance));
+
+                if (@class == null)
+                    return NotFound();
+
+                var student = @class.Students.SingleOrDefault(s => s.StudentId == studentId);
+
+                if (student == null)
+                    return NotFound();
+
+                var attendance = student.Attendance.SingleOrDefault(a => a.Date == date.Date);
+
+                if (attendance == null)
+                {
+                    attendance = new Attendance(student, date.Date, true);
+                    await _attendanceRepository.AddAsync(attendance);
+                }
+                else
+                {
+                    attendance.SetAbsent(true);
+                    await _attendanceRepository.UpdateAsync(attendance);
+                }
+
+                return Ok();
             });
     }
 }
