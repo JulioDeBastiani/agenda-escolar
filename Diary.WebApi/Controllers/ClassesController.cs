@@ -131,7 +131,7 @@ namespace Diary.WebApi.Controllers
                 return Ok();
             });
 
-        [HttpPost("{id}/present/{studentId}/{date}")]
+        [HttpPost("{id}/absent/{studentId}/{date}")]
         [Authorize]
         public Task<ActionResult> AbsentAsync(Guid id, Guid studentId, DateTime date)
             => ExecuteAsync(async () =>
