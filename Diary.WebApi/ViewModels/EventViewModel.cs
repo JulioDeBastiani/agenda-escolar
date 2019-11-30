@@ -11,6 +11,7 @@ namespace Diary.WebApi.ViewModels
         public DateTime CreatedAt { get; set; }
         public DateTime Date { get; set; }
         public TimeSpan Duration { get; set; }
+        public string Description { get; set; }
         public string Status { get; set; }
         public UserViewModel Creator { get; set; }
         public IEnumerable<AttendeeViewModel> Attendees { get; set; }
@@ -26,6 +27,7 @@ namespace Diary.WebApi.ViewModels
                 CreatedAt = @event.CreatedAt,
                 Date = @event.Date,
                 Duration = @event.Duration,
+                Description = @event.Description,
                 Status = @event.Status.ToString(),
                 Creator = @event.Creator,
                 Attendees = @event.Attendees.Select(a => (AttendeeViewModel) a)

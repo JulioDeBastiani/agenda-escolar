@@ -10,6 +10,7 @@ namespace Diary.Domain
     {
         public DateTime Date { get; private set; }
         public TimeSpan Duration { get; private set; }
+        public string Description { get; private set; }
         public EventStatus Status { get; private set; }
         public Guid CreatorId { get; private set; }
         public User Creator { get; private set; }
@@ -19,7 +20,7 @@ namespace Diary.Domain
         {
         }
 
-        public Event(DateTime date, TimeSpan duration, User creator)
+        public Event(DateTime date, TimeSpan duration, string description, User creator)
         {
             SetDate(date);
             SetDuration(duration);
@@ -50,6 +51,14 @@ namespace Diary.Domain
                 throw new ArgumentOutOfRangeException(nameof(duration));
 
             Duration = duration;
+        }
+
+        public void SetDescription(string description)
+        {
+            if (string.IsNullOrWhiteSpace(description))
+                throw new ArgumentNullException(nameof(description));
+
+            Description = description;
         }
 
         public void SetStatus(EventStatus status)

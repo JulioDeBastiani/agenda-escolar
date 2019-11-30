@@ -115,7 +115,7 @@ namespace Diary.WebApi.Controllers
 
                 var creator = await _usersRepository.GetByIdAsync(inputModel.CreatorId);
 
-                var @event = new Event(inputModel.Date, inputModel.Duration, creator);
+                var @event = new Event(inputModel.Date, inputModel.Duration, inputModel.Description, creator);
                 await _eventsRepository.AddAsync(@event);
                 return Ok((EventViewModel) @event);
             });
@@ -143,6 +143,9 @@ namespace Diary.WebApi.Controllers
 
                 if (inputModel.Duration.HasValue)
                     @event.SetDuration(inputModel.Duration.Value);
+
+                if (!string.IsNullOrWhiteSpace(inputModel.Description))
+                    @event.SetDescription(inputModel.Description);
 
                 await _eventsRepository.UpdateAsync(@event);
                 return Ok((EventViewModel) @event);
