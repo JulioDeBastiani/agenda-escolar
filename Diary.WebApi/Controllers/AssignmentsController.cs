@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 using Diary.Data;
 using Diary.Domain;
 using Diary.WebApi.InputModels;
+using Diary.WebApi.Services;
 using Diary.WebApi.ViewModels;
+using Hangfire;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -70,6 +72,11 @@ namespace Diary.WebApi.Controllers
                 
                 var assignment = new Assignment(@class, inputModel.DueAt, inputModel.Title, inputModel.Description, inputModel.MaxGrade);
                 await _assignmentsRepository.AddAsync(assignment);
+
+                var jobId = BackgroundJob.Schedule<NotificationService>(s => s.HandleEventNotification(assignment.Id), assignment.DueAt - TimeSpan.FromDays(1));
+                assignment.SetNotificationEventId(jobId);
+                await _assignmentsRepository.UpdateAsync(assignment);
+                
                 return Ok((AssignmentViewModel) assignment);
             });
 
@@ -87,7 +94,13 @@ namespace Diary.WebApi.Controllers
                     return NotFound();
 
                 if (inputModel.DueAt != null)
+                {
+                    BackgroundJob.Delete(assignment.NotificationJobId);
+
+                    var jobId = BackgroundJob.Schedule<NotificationService>(s => s.HandleAssignmentNotification(assignment.Id), assignment.DueAt - TimeSpan.FromDays(1));
                     assignment.SetDueAt(inputModel.DueAt.Value);
+                    await _assignmentsRepository.UpdateAsync(assignment);
+                }
                 
                 if (inputModel.Title != null)
                     assignment.SetTitle(inputModel.Title);
@@ -112,6 +125,7 @@ namespace Diary.WebApi.Controllers
                 if (assignment == null)
                     return NotFound();
 
+                BackgroundJob.Delete(assignment.NotificationJobId);
                 await _assignmentsRepository.DeleteAsync(assignment);
                 return Ok();
             });

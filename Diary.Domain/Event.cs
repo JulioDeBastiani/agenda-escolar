@@ -14,6 +14,7 @@ namespace Diary.Domain
         public EventStatus Status { get; private set; }
         public Guid CreatorId { get; private set; }
         public User Creator { get; private set; }
+        public string NotificationEventId { get; private set; }
         public ICollection<UserEvent> Attendees { get; private set; }
 
         public Event()
@@ -70,6 +71,14 @@ namespace Diary.Domain
                 throw new InvalidOperationException("New event status must be terminal");
 
             Status = status;
+        }
+
+        public void SetNotificationEventId(string jobId)
+        {
+            if (string.IsNullOrWhiteSpace(jobId))
+                throw new ArgumentNullException(nameof(jobId));
+
+            NotificationEventId = jobId;
         }
     }
 }

@@ -6,7 +6,9 @@ using Diary.Data;
 using Diary.Domain;
 using Diary.Domain.Enumerators;
 using Diary.WebApi.InputModels;
+using Diary.WebApi.Services;
 using Diary.WebApi.ViewModels;
+using Hangfire;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -117,6 +119,11 @@ namespace Diary.WebApi.Controllers
 
                 var @event = new Event(inputModel.Date, inputModel.Duration, inputModel.Description, creator);
                 await _eventsRepository.AddAsync(@event);
+
+                var jobId = BackgroundJob.Schedule<NotificationService>(s => s.HandleEventNotification(@event.Id), @event.Date - TimeSpan.FromDays(1));
+                @event.SetNotificationEventId(jobId);
+                await _eventsRepository.UpdateAsync(@event);
+                
                 return Ok((EventViewModel) @event);
             });
 
@@ -139,7 +146,13 @@ namespace Diary.WebApi.Controllers
                     return NotFound();
 
                 if (inputModel.Date.HasValue)
+                {
                     @event.SetDate(inputModel.Date.Value);
+
+                    BackgroundJob.Delete(@event.NotificationEventId);
+                    var jobId = BackgroundJob.Schedule<NotificationService>(s => s.HandleEventNotification(@event.Id), @event.Date - TimeSpan.FromDays(1));
+                    @event.SetNotificationEventId(jobId);
+                }
 
                 if (inputModel.Duration.HasValue)
                     @event.SetDuration(inputModel.Duration.Value);
@@ -167,6 +180,7 @@ namespace Diary.WebApi.Controllers
                     return NotFound();
 
                 @event.SetStatus(EventStatus.Canceled);
+                BackgroundJob.Delete(@event.NotificationEventId);
 
                 await _eventsRepository.UpdateAsync(@event);
                 return Ok((EventViewModel) @event);

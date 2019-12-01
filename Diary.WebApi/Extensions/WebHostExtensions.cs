@@ -21,22 +21,22 @@ namespace Diary.WebApi.Extensions
                     var user = context.Users.FirstOrDefault();
                     if (user == null)
                     {
-                        var admin = new User("admin", "admin", "admin", UserType.Admin);
+                        var admin = new User("admin", "admin", "email", "admin", UserType.Admin);
                         context.Users.Add(admin);
 
-                        var teacher = new User("iraci", "iraci", "pass", UserType.Teacher);
+                        var teacher = new User("iraci", "iraci", "email", "pass", UserType.Teacher);
                         context.Users.Add(teacher);
 
-                        var julio = new User("julio", "julio", "pass", UserType.Student);
+                        var julio = new User("julio", "julio", "jcsbastiani@ucs.br", "pass", UserType.Student);
                         context.Users.Add(julio);
 
-                        var guilherme = new User("guilherme", "guilherme", "pass", UserType.Student);
+                        var guilherme = new User("guilherme", "guilherme", "email", "pass", UserType.Student);
                         context.Users.Add(guilherme);
 
-                        var cesar = new User("cesar", "cesar", "pass", UserType.Student);
+                        var cesar = new User("cesar", "cesar", "email", "pass", UserType.Student);
                         context.Users.Add(cesar);
 
-                        var matheus = new User("matheus", "matheus", "pass", UserType.Student);
+                        var matheus = new User("matheus", "matheus", "email", "pass", UserType.Student);
                         context.Users.Add(matheus);
 
                         var sy = new SchoolYear(2019);

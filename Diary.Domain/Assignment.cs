@@ -11,6 +11,7 @@ namespace Diary.Domain
         public string Title { get; private set; }
         public string Description { get; private set; }
         public float MaxGrade { get; private set; }
+        public string NotificationJobId { get; private set; }
 
         public Assignment()
         {
@@ -56,6 +57,14 @@ namespace Diary.Domain
                 throw new ArgumentOutOfRangeException(nameof(dueAt));
 
             DueAt = dueAt;
+        }
+
+        public void SetNotificationEventId(string jobId)
+        {
+            if (string.IsNullOrWhiteSpace(jobId))
+                throw new ArgumentNullException(nameof(jobId));
+
+            NotificationJobId = jobId;
         }
     }
 }

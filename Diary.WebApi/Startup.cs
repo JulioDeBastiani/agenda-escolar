@@ -6,6 +6,9 @@ using System.Reflection;
 using Diary.Data;
 using Diary.Domain;
 using Diary.WebApi.Security;
+using Diary.WebApi.Services;
+using Hangfire;
+using Hangfire.MySql.Core;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -51,6 +54,9 @@ namespace Diary.WebApi
             services.AddScoped<GenericRepository<UserGuardian>>();
 
             services.AddScoped<TokenService>();
+            services.AddScoped<NotificationService>();
+            services.Configure<EmailSettings>(_config.GetSection("EmailSettings"));
+            services.AddScoped<EmailService>();
             
             var tokenSettings = new TokenSettings();
             var tokenConfigurator = new ConfigureFromConfigurationOptions<TokenSettings>(_config.GetSection("TokenSettings"));
@@ -116,6 +122,14 @@ namespace Diary.WebApi
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
             });
+
+            services.AddHangfire(config => config
+                .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+                .UseSimpleAssemblyNameTypeSerializer()
+                .UseRecommendedSerializerSettings()
+                .UseStorage(new MySqlStorage(_config.GetConnectionString("hangfiredb"))));
+
+            services.AddHangfireServer();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -132,6 +146,8 @@ namespace Diary.WebApi
             app.UseAuthentication();
             app.UseCors("AnyOrigin");
             app.UseMvc();
+
+            app.UseHangfireDashboard();
         }
     }
 }

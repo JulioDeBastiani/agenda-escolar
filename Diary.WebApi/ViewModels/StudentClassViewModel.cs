@@ -12,6 +12,7 @@ namespace Diary.WebApi.ViewModels
         public DateTime CreatedAt { get; set; }
         public string Name { get; set; }
         public string Username { get; set; }
+        public string Email { get; set; }
         public int Absences { get; set; }
         public IEnumerable<AttendanceViewModel> Attendance { get; set; }
         public float AttendanceM { get; set; }
@@ -52,6 +53,7 @@ namespace Diary.WebApi.ViewModels
                 CreatedAt = studentClass.Student.CreatedAt,
                 Name = studentClass.Student.Name,
                 Username = studentClass.Student.Username,
+                Email = studentClass.Student.Email,
                 Absences = absences,
                 Attendance = attendance,
                 AttendanceM = (totalClasses - absences)

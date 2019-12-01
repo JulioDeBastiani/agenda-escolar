@@ -11,6 +11,7 @@ namespace Diary.Domain
         public string Name { get; private set; }
         public string Username { get; private set; }
         public string Password { get; private set; }
+        public string Email { get; private set; }
         public UserType Type { get; private set; }
         public ICollection<Class> TaughtClasses { get; private set; }
         public ICollection<StudentClass> Classes { get; private set; }
@@ -25,7 +26,7 @@ namespace Diary.Domain
         {
         }
 
-        public User(string name, string username, string password, UserType type)
+        public User(string name, string username, string email, string password, UserType type)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentNullException(nameof(name));
@@ -33,11 +34,15 @@ namespace Diary.Domain
             if (string.IsNullOrWhiteSpace(username))
                 throw new ArgumentNullException(nameof(username));
 
+            if (string.IsNullOrWhiteSpace(email))
+                throw new ArgumentNullException(nameof(email));
+
             if (string.IsNullOrWhiteSpace(password))
                 throw new ArgumentNullException(nameof(password));
             
             Name = name;
             Username = username;
+            Email = email;
             Password = password;
             Type = type;
 
